@@ -5,14 +5,14 @@ ENV PORT=8000
 
 WORKDIR /app
 
+# Install system dependencies (as root)
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends curl && \
+    rm -rf /var/lib/apt/lists/*
+
 # Create and switch to non-root user
 RUN useradd -m appuser && chown -R appuser:appuser /app
 USER appuser
-
-# Install system dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    curl \
-    && rm -rf /var/lib/apt/lists/*
 
 # Install Python dependencies
 COPY requirements.txt .

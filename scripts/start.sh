@@ -7,8 +7,13 @@ if [ -z "$BOT_TOKEN" ]; then
     exit 1
 fi
 
-# Set default port if not provided
+# Railway.app automatically sets PORT, but we'll keep the default for compatibility
 PORT=${PORT:-8000}
+
+# Log Railway.app specific info if available
+if [ -n "$RAILWAY_ENVIRONMENT" ]; then
+    echo "Running on Railway.app environment: $RAILWAY_ENVIRONMENT"
+fi
 
 # Register webhook if configured
 if [ -n "$WEBHOOK_URL" ]; then
@@ -27,4 +32,5 @@ fi
 
 # Start the application
 echo "Starting Aura VCF Bot on port $PORT..."
-exec gunicorn -k uvicorn.workers.UvicornWorker -b 0.0.0.0:$PORT --workers 4 bot.main:app
+echo "Bot will be available at: http://0.0.0.0:$PORT"
+exec gunicorn -k uvicorn.workers.UvicornWorker -b 0.0.0.0:$PORT --workers 4 --timeout 120 bot.main:app
