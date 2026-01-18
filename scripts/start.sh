@@ -1,12 +1,6 @@
 #!/bin/bash
 set -e
 
-# Validate environment
-if [ -z "$BOT_TOKEN" ]; then
-    echo "ERROR: BOT_TOKEN is required"
-    exit 1
-fi
-
 # Railway.app automatically sets PORT, but we'll keep the default for compatibility
 PORT=${PORT:-8000}
 
